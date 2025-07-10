@@ -28,10 +28,8 @@ export class AuthsService implements OnModuleInit {
 
   async login(email: string, password: string) {
     try {
-      console.log(`Attempting to log in user: ${email}`);
       return await firstValueFrom(this.authService.login({ email, password }));
     } catch (err) {
-      console.error('Login error:', err);
       switch (err.code) {
         case status.NOT_FOUND:
           throw new NotFoundException(err.details || 'User not found');
@@ -47,12 +45,9 @@ export class AuthsService implements OnModuleInit {
 
   async validateToken(token: string){
     try {
-      
-        console.log(`Validating token: ${token}`);
         const response = await firstValueFrom(this.authService.validateToken({ token }));
         return response.isValid;
     } catch (err) {
-      console.error('Token validation error:', err);
       switch (err.code) {
         case status.UNAUTHENTICATED:
           throw new UnauthorizedException(err.details || 'Invalid token');
